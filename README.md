@@ -1,4 +1,4 @@
-# terminalRPG.cs
+#consoleRPG.cs
 An RPG with infinite battles and infinite possible adventures!
 
 ## How to run
