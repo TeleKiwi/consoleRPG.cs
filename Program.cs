@@ -20,6 +20,7 @@ namespace consoleRPG
         public static int playerXP = 0;
         public static int playerLVL = 1;
         public static int i;
+        public static string context;
         public static string[] moves =
         {
             "Melee",
@@ -40,6 +41,11 @@ namespace consoleRPG
         {
             Console.Title = "consoleRPG.cs";
 
+            TitleScreen();
+        }
+        
+        static void TitleScreen()
+        {
             // title screen
             Console.WriteLine("consoleRPG.cs");
             Console.WriteLine("version " + versionNo);
@@ -129,7 +135,8 @@ namespace consoleRPG
                         break;
                     }
                 case "3":
-                    {
+                    {   
+                        context = "main menu";
                         Save();
                         break;
                     }
@@ -188,11 +195,50 @@ namespace consoleRPG
         }
 
         static void Save()
-        {            
-            Cryptography.Encrypt(Convert.ToString(playerName), "35");
-            userPassword = 
-            Cryptography.Encrypt(Convert.ToString(playerXP), "27574");
-            Cryptography.Encrypt(Convert.ToString(playerHP), "shoe");
+        {   
+            Console.Clear();
+            Console.WriteLine("Generating your password....");
+            Console.WriteLine("------------------------------");
+            Cryptography.Encrypt(Convert.ToString(playerName), "stqm3-9tm64-193kk");
+            userPassword = userPassword + Cryptography.result;
+            Cryptography.Encrypt(Convert.ToString(playerXP), "4m1ii-93641-mqhjl");
+            userPassword = userPassword + Cryptography.result;
+            Cryptography.Encrypt(Convert.ToString(playerHP), "331jk-loinf-5t1ja");
+            userPassword = userPassword + Cryptography.result;
+            Cryptography.Encrypt(Convert.ToString(playerMP), "kja81-9knag-pq1tb");
+            userPassword = userPassword + Cryptography.result;
+            Cryptography.Encrypt(Convert.ToString(playerLVL), "nhgya-muiy1-g1n7k");
+            userPassword = userPassword + Cryptography.result;
+
+            Console.Clear();
+            Console.WriteLine("Here's your password.");
+            Console.WriteLine(userPassword);
+            Console.WriteLine("Don't forget it! Press any key to continue.");
+            Console.WriteLine("----------------------------------------------");
+            Console.ReadKey();
+
+            Console.Clear();
+            switch(context)
+            {
+                case "quit":
+                {
+                    QuitConformation();
+                    break;
+                }
+                case "main menu":
+                {
+                    GameLoop();
+                    break;
+                }
+                default:
+                {
+                    Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
+                    Thread.Sleep(5000);
+                    Console.Clear();
+                    TitleScreen();
+                    break;
+                }
+            }
 
         }
 
@@ -217,7 +263,8 @@ namespace consoleRPG
             switch (tempVar)
             {
                 case "1":
-                    {
+                    {   
+                        context = "quit";
                         Save();
                         break;
                     }
@@ -324,6 +371,8 @@ namespace consoleRPG
 
     public class Cryptography
     {  
+        public static string result;
+
         public static string Encrypt(string input, string key)  
         {  
             byte[] inputArray = UTF8Encoding.UTF8.GetBytes(input);  
@@ -333,8 +382,9 @@ namespace consoleRPG
             tripleDES.Padding = PaddingMode.PKCS7;  
             ICryptoTransform cTransform = tripleDES.CreateEncryptor();  
             byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
-            tripleDES.Clear();  
-            return Convert.ToBase64String(resultArray, 0, resultArray.Length);  
+            tripleDES.Clear(); 
+            result = Convert.ToBase64String(resultArray, 0, resultArray.Length); 
+            return result;
         }  
         public static string Decrypt(string input, string key)  
         {  
@@ -346,7 +396,8 @@ namespace consoleRPG
             ICryptoTransform cTransform = tripleDES.CreateDecryptor();  
             byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
             tripleDES.Clear();   
-            return UTF8Encoding.UTF8.GetString(resultArray);  
+            result = UTF8Encoding.UTF8.GetString(resultArray);  
+            return result;
         }  
     }  
 
