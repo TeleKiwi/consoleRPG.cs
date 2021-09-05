@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Diagnostics;
+using System.Text;
+using System.Security.Cryptography;
+
+// encryption and decryption code from c-sharpcorner.com
 
 namespace consoleRPG
 {
@@ -8,6 +12,8 @@ namespace consoleRPG
     {
         public static string playerName;
         public static string versionNo = "0.0.1";
+        public static string userPassword;
+        public static string key;
         public static string tempVar; // used to store player input temporarily
         public static int playerHP;
         public static int playerMP;
@@ -182,8 +188,12 @@ namespace consoleRPG
         }
 
         static void Save()
-        {
-            // todo
+        {            
+            Cryptography.Encrypt(Convert.ToString(playerName), "35");
+            userPassword = 
+            Cryptography.Encrypt(Convert.ToString(playerXP), "27574");
+            Cryptography.Encrypt(Convert.ToString(playerHP), "shoe");
+
         }
 
         static void Load()
@@ -224,6 +234,11 @@ namespace consoleRPG
                     }
             }
 
+            QuitConformation(); // split this up so we can return to this if we decide to save
+        }
+
+        public static void QuitConformation()
+        {
             Console.Clear();
             Console.WriteLine("Are you sure you want to quit?");
             Console.WriteLine("1 for yes, 2 for no.");
@@ -306,5 +321,33 @@ namespace consoleRPG
         }
 
     }
+
+    public class Cryptography
+    {  
+        public static string Encrypt(string input, string key)  
+        {  
+            byte[] inputArray = UTF8Encoding.UTF8.GetBytes(input);  
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();  
+            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);  
+            tripleDES.Mode = CipherMode.ECB;  
+            tripleDES.Padding = PaddingMode.PKCS7;  
+            ICryptoTransform cTransform = tripleDES.CreateEncryptor();  
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
+            tripleDES.Clear();  
+            return Convert.ToBase64String(resultArray, 0, resultArray.Length);  
+        }  
+        public static string Decrypt(string input, string key)  
+        {  
+            byte[] inputArray = Convert.FromBase64String(input);  
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();  
+            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);  
+            tripleDES.Mode = CipherMode.ECB;  
+            tripleDES.Padding = PaddingMode.PKCS7;  
+            ICryptoTransform cTransform = tripleDES.CreateDecryptor();  
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
+            tripleDES.Clear();   
+            return UTF8Encoding.UTF8.GetString(resultArray);  
+        }  
+    }  
 
 }
