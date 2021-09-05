@@ -13,7 +13,7 @@ namespace consoleRPG
         public static int playerMP;
         public static int playerXP = 0;
         public static int playerLVL = 1;
-        
+
         static void Main(string[] args)
         {
             Console.Title = "consoleRPG.cs";
@@ -32,23 +32,23 @@ namespace consoleRPG
             Console.WriteLine("----------------------------------------------------------");
             tempVar = Convert.ToString(Console.ReadLine());
 
-            switch(tempVar)
+            switch (tempVar)
             {
                 case "1":
-                {
-                    NewGame();
-                    break;
-                }
+                    {
+                        NewGame();
+                        break;
+                    }
                 case "2":
-                {
-                    NewGame();
-                    break; // will implement save/load system later, for now we pass into a new game
-                }
+                    {
+                        Load();
+                        break;
+                    }
                 default:
-                {
-                    Console.WriteLine("Invalid input.");
-                    break;
-                }
+                    {
+                        Console.WriteLine("Invalid input.");
+                        break;
+                    }
             }
             Console.ReadKey(); // instaclose prevention
         }
@@ -94,119 +94,124 @@ namespace consoleRPG
             Console.WriteLine("-----------------------------------");
             tempVar = Convert.ToString(Console.ReadLine());
 
-            switch(tempVar)
+            switch (tempVar)
             {
                 case "1":
-                {
-                    BeginBattle();
-                    break;
-                }
+                    {
+                        BeginBattle();
+                        break;
+                    }
                 case "2":
-                {
-                    ViewItems();
-                    break;
-                }
+                    {
+                        ViewItems();
+                        break;
+                    }
                 case "3":
-                {
-                    Save();
-                    break;
-                }
-                case "4":
-                {
-                    Quit();
-                    break;
-                }
-                default:
-                {
-                    Console.WriteLine("Invalid input.");
-                    Thread.Sleep(2000);
-                    GameLoop();
-                    break;
-                }
-            }
-            
-            static void BeginBattle()
-            {
-                Enemy.GenEnemy();
-                Console.WriteLine("You encountered a level " + Enemy.enemyLVL + " " + Enemy.enemyType + "!");
-                Thread.Sleep(5000);
-                Console.Clear();
-                MainBattleLoop();
-            }
-
-            static void ViewItems()
-            {
-                // todo: view items scripts
-            }
-
-            static void Save()
-            {
-                // todo
-            }
-
-            static void MainBattleLoop()
-            {
-                // todo
-            }
-
-            static void Quit()
-            {
-                Console.Clear();
-                Console.WriteLine("Do you want to save before quitting?");
-                Console.WriteLine("1 for yes, 2 for no.");
-                Console.WriteLine("-------------------------------------");
-                tempVar = Convert.ToString(Console.ReadLine());
-
-                switch(tempVar)
-                {
-                    case "1":
                     {
                         Save();
                         break;
                     }
-                    case "2":
+                case "4":
+                    {
+                        Quit();
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Invalid input.");
+                        Thread.Sleep(2000);
+                        GameLoop();
+                        break;
+                    }
+            }
+        }
+
+        static void BeginBattle()
+        {
+            Enemy.GenEnemy();
+            Console.WriteLine("You encountered a level " + Enemy.enemyLVL + " " + Enemy.enemyType + "!");
+            Thread.Sleep(5000);
+            Console.Clear();
+            MainBattleLoop();
+        }
+
+        static void ViewItems()
+        {
+            // todo
+        }
+
+        static void Save()
+        {
+            // todo
+        }
+
+        static void Load()
+        {
+            // todo
+        }
+
+        static void MainBattleLoop()
+        {
+            // todo
+        }
+
+        static void Quit()
+        {
+            Console.Clear();
+            Console.WriteLine("Do you want to save before quitting?");
+            Console.WriteLine("1 for yes, 2 for no.");
+            Console.WriteLine("-------------------------------------");
+            tempVar = Convert.ToString(Console.ReadLine());
+
+            switch (tempVar)
+            {
+                case "1":
+                    {
+                        Save();
+                        break;
+                    }
+                case "2":
                     {
                         break;
                     }
-                    default:
+                default:
                     {
                         Console.WriteLine("Invalid input.");
                         Thread.Sleep(2000);
                         Quit();
                         break;
                     }
-                }
+            }
 
-                Console.Clear();
-                Console.WriteLine("Are you sure you want to quit?");
-                Console.WriteLine("1 for yes, 2 for no.");
-                Console.WriteLine("-------------------------------------");
-                tempVar = Convert.ToString(Console.ReadLine());
+            Console.Clear();
+            Console.WriteLine("Are you sure you want to quit?");
+            Console.WriteLine("1 for yes, 2 for no.");
+            Console.WriteLine("-------------------------------------");
+            tempVar = Convert.ToString(Console.ReadLine());
 
-                switch(tempVar)
-                {
-                    case "1":
+            switch (tempVar)
+            {
+                case "1":
                     {
                         Environment.Exit(0);
                         break;
                     }
-                    case "2":
+                case "2":
                     {
                         GameLoop();
                         break;
                     }
-                    default:
+                default:
                     {
                         Console.WriteLine("Invalid input.");
                         Thread.Sleep(2000);
                         Quit();
                         break;
                     }
-                }
             }
-
         }
-    }   
+
+    }
 
     class Enemy
     {
@@ -248,16 +253,17 @@ namespace consoleRPG
 
         public static void GenEnemy()
         {
-            while(enemyLVL !> Player.playerLVL)
-            {   // this generates the enemy type
+            while (enemyLVL !> Player.playerLVL)
+            {   
+                // this generates the enemy type
                 enemyTempVar = enemyR.Next(1, enemyTypeAmount);
                 enemyType = possibleEnemyTypes[enemyTempVar];
-                
+
                 // and this generates the enemy's level
                 enemyLVL = enemyR.Next(minEnemyLevels[enemyTempVar], maxEnemyLevels[enemyTempVar]);
             }
         }
 
     }
-    
+
 }
