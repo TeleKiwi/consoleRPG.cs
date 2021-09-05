@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace consoleRPG
 {
-    class Program
+    class Player
     {
         public static string playerName;
         public static string versionNo = "0.0.1";
@@ -124,6 +124,30 @@ namespace consoleRPG
                     break;
                 }
             }
+            
+            static void BeginBattle()
+            {
+                Enemy.GenEnemy();
+                Console.WriteLine("You encountered a level " + Enemy.enemyLVL + " " + Enemy.enemyType + "!");
+                Thread.Sleep(5000);
+                Console.Clear();
+                MainBattleLoop();
+            }
+
+            static void ViewItems()
+            {
+                // todo: view items scripts
+            }
+
+            static void Save()
+            {
+                // todo
+            }
+
+            static void MainBattleLoop()
+            {
+                // todo
+            }
 
             static void Quit()
             {
@@ -184,4 +208,56 @@ namespace consoleRPG
         }
     }   
 
+    class Enemy
+    {
+        public static string enemyType;
+        public static Random enemyR = new Random();
+        public static int enemyTempVar;
+        public static int enemyLVL;
+        public static int enemyHP;
+        public static int enemyMP;
+        public static int enemyTypeAmount = possibleEnemyTypes.Length;
+        public static string[] possibleEnemyTypes =
+        {
+            "Goba",
+            "Shiny Goba",
+            "Qubon",
+            "Shiny Qubon",
+            "Menena",
+            "Shiny Menena",
+        };
+        public static int[] minEnemyLevels =
+        {
+            1,
+            11,
+            16,
+            23,
+            45,
+            61
+
+        };
+        public static int[] maxEnemyLevels =
+        {
+            5,
+            15,
+            25,
+            35,
+            65,
+            85
+        };
+
+        public static void GenEnemy()
+        {
+            while(enemyLVL !> Player.playerLVL)
+            {   // this generates the enemy type
+                enemyTempVar = enemyR.Next(1, enemyTypeAmount);
+                enemyType = possibleEnemyTypes[enemyTempVar];
+                
+                // and this generates the enemy's level
+                enemyLVL = enemyR.Next(minEnemyLevels[enemyTempVar], maxEnemyLevels[enemyTempVar]);
+            }
+        }
+
+    }
+    
 }
