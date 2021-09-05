@@ -13,6 +13,22 @@ namespace consoleRPG
         public static int playerMP;
         public static int playerXP = 0;
         public static int playerLVL = 1;
+        public static int i;
+        public static string[] moves =
+        {
+            "Melee",
+            "Spell",
+            "Heal"
+        };
+        public static int[] damage =
+        {
+            5,
+            7,
+            -5
+        };
+        public static string[] items;
+        public static string[] itemDescriptions;
+        public static string[] itemDamage;
 
         static void Main(string[] args)
         {
@@ -137,7 +153,32 @@ namespace consoleRPG
 
         static void ViewItems()
         {
-            // todo
+            Console.Clear();
+
+            for (i = 0; i <= moves.Length; i++)
+            {
+                if (moves[i] == "Heal")
+                {
+                    Console.WriteLine("Heal - Heals " + Math.Abs(damage[i]) + " health.");
+                }
+                else
+                {
+                    Console.WriteLine(moves[i] + " - Deals " + damage[i] + " damage.");
+                }
+            }
+            
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+            for (i = 0; i <= items.Length; i++)
+            {
+                Console.WriteLine(items[i] + " - " + itemDescriptions[i]);    
+            }
+
+            Console.WriteLine("Press any key to exit.");
+            Console.WriteLine("-------------------------------------------------");
+            Console.ReadKey();
+            GameLoop();
+
         }
 
         static void Save()
