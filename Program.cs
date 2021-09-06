@@ -162,6 +162,8 @@ namespace consoleRPG
         {
             Enemy.GenEnemy();
             Console.WriteLine("You encountered a level " + Enemy.enemyLVL + " " + Enemy.enemyType + "!");
+            Enemy.enemyMP = 100;
+            Enemy.enemyHP = 100;
             Thread.Sleep(5000);
             Console.Clear();
             MainBattleLoop();
