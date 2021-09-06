@@ -302,7 +302,7 @@ namespace consoleRPG
                 Console.WriteLine("1 - ATTACKS      2 - HEAL");
                 Console.WriteLine("3 - ITEMS        4 - RUN AWAY");
                 Console.WriteLine("----------------------------------------------------------------------------------------------");
-                tempVar = Convert.ToString(Console.ReadLine());
+                tempVar = Convert.ToString(Console.ReadKey());
 
                 switch (tempVar)
                 {
@@ -427,7 +427,38 @@ namespace consoleRPG
 
         public static void InitAttackMenu()
         {
-            // todo
+            Console.Clear();
+
+            Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
+            Console.WriteLine(Enemy.enemyType + ": " + Enemy.enemyHP + "HP, " + Enemy.enemyMP + "MP, LEVEL" + Enemy.enemyLVL);
+            Console.WriteLine("1 - MELEE    2 - SPELL");
+            Console.WriteLine("3 - BACK");
+            Console.WriteLine("----------------------------------------------------------------------------------------------");
+            tempVar = Convert.ToString(Console.ReadKey());
+
+            switch(tempVar)
+            {
+                case "1":
+                {
+                    Attacks.MeleeAttack();
+                    break;
+                }
+                case "2":
+                {
+                    Attacks.SpellAttack();
+                    break;
+                }
+                case "3":
+                {
+                    MainBattleLoop();
+                    break;
+                }
+                default:
+                {
+                    Console.WriteLine("Input not valid. Try again.");
+                    break;
+                }
+            }
         }
 
         public static void RunAway()
@@ -455,7 +486,11 @@ namespace consoleRPG
             }
 
         }
-
+        
+        public static void PlayerDeath()
+        {
+            // todo
+        }
     }
 
     class Enemy
@@ -509,6 +544,10 @@ namespace consoleRPG
             }
         }
 
+        public static void EnemyDeath()
+        {
+            // todo
+        }
     }
 
     public class Cryptography
