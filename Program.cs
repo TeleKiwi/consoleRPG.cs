@@ -12,10 +12,12 @@ namespace consoleRPG
     class Player
     {
         public static string playerName;
-        public static string versionNo = "0.0.2";
+        public static string versionNo = "0.0.3";
         public static string userPassword;
         public static string key;
         public static string tempVar; // used to store player input temporarily
+        public static int battleTurn;
+        public static int tempInt;
         public static int playerHP;
         public static int playerMP;
         public static int playerXP = 0;
@@ -293,7 +295,9 @@ namespace consoleRPG
         public static void MainBattleLoop()
         {
             Console.Clear();
-            Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
+
+            if(battleTurn == 0)
+            {Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
             Console.WriteLine(Enemy.enemyType + ": " + Enemy.enemyHP + "HP, " + Enemy.enemyMP + "MP, LEVEL" + Enemy.enemyLVL);
             Console.WriteLine("1 - ATTACKS      2 - HEAL");
             Console.WriteLine("3 - ITEMS        4 - RUN AWAY");
@@ -330,10 +334,34 @@ namespace consoleRPG
                     MainBattleLoop();
                     break;
                 }
+            }
             }   
+            else
+            {
+                tempInt = Enemy.enemyR.Next(0, 9);
 
+                switch(tempInt)
+                {
+                    case 1 or 2 or 3:
+                    {
+                        EnemyMeleeAttack();
+                        break;
+                    }
+                    case 4 or 5 or 6:
+                    {
+                        EnemySpellAttack();
+                        break;
+                    }
+                    case 7 or 8 or 9:
+                    {
+                        EnemyHeal();
+                        break;
+                    }
+                }
+            }
 
         }
+        
 
         static void Quit()
         {
@@ -404,7 +432,28 @@ namespace consoleRPG
 
         public static void RunAway()
         {
-            // todo
+            Console.Clear();
+            
+            tempInt = Enemy.enemyR.Next(0, 10);
+
+            if(tempInt <= 4) // failed to run away
+            {
+                Console.WriteLine("You failed to run away!");
+                Console.WriteLine("-------------------------");
+                Thread.Sleep(5000);
+                battleTurn = 1;
+                MainBattleLoop();
+            }
+            else
+            {
+                Console.WriteLine("You got away safely!");
+                Console.WriteLine("---------------------");
+                Thread.Sleep(5000);
+                Player.battleTurn = 0;
+                GameLoop();
+                
+            }
+
         }
 
     }
