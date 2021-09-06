@@ -5,13 +5,14 @@ using System.Text;
 using System.Security.Cryptography;
 
 // encryption and decryption code from c-sharpcorner.com
+// (i slightly modified it)
 
 namespace consoleRPG
 {
     class Player
     {
         public static string playerName;
-        public static string versionNo = "0.0.1";
+        public static string versionNo = "0.0.2";
         public static string userPassword;
         public static string key;
         public static string tempVar; // used to store player input temporarily
@@ -47,6 +48,7 @@ namespace consoleRPG
         static void TitleScreen()
         {
             // title screen
+            Console.Clear();
             Console.WriteLine("consoleRPG.cs");
             Console.WriteLine("version " + versionNo);
             Console.WriteLine("Press any key to begin.");
@@ -58,7 +60,7 @@ namespace consoleRPG
             Console.WriteLine("Would you like to save or load a new file?");
             Console.WriteLine("Type '1' to start a new game or '2' to enter a save key.");
             Console.WriteLine("----------------------------------------------------------");
-            tempVar = Convert.ToString(Console.ReadLine());
+            tempVar = Convert.ToString(Console.ReadKey());
 
             switch (tempVar)
             {
@@ -84,7 +86,7 @@ namespace consoleRPG
         static void NewGame()
         {
             Console.Clear();
-            Console.WriteLine("Hello there, young fellow");
+            Console.WriteLine("Hello there, young fellow!");
             Console.WriteLine("I see you're trying to become a wizard, eh?");
             Console.WriteLine("Well, that's no problem! I can help you achieve your dreams!");
             Console.WriteLine("What was your name again? I must have forgotten.");
@@ -120,7 +122,7 @@ namespace consoleRPG
             Console.WriteLine("1 - BATTLE        2 - ITEMS/MOVES");
             Console.WriteLine("3 - SAVE          4 - QUIT");
             Console.WriteLine("-----------------------------------");
-            tempVar = Convert.ToString(Console.ReadLine());
+            tempVar = Convert.ToString(Console.ReadKey());
 
             switch (tempVar)
             {
@@ -190,7 +192,29 @@ namespace consoleRPG
             Console.WriteLine("Press any key to exit.");
             Console.WriteLine("-------------------------------------------------");
             Console.ReadKey();
-            GameLoop();
+            switch(context)
+            {
+                case "main menu":
+                {
+                    GameLoop();
+                    break;
+                }
+                case "attack menu":
+                {
+                    MainBattleLoop();
+                    break;
+                }
+                default:
+                {
+                    Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
+                    Thread.Sleep(5000);
+                    Console.Clear();
+                    TitleScreen();
+                    break;
+                }
+                
+            }
+            
 
         }
 
@@ -201,14 +225,19 @@ namespace consoleRPG
             Console.WriteLine("------------------------------");
             Cryptography.Encrypt(Convert.ToString(playerName), "stqm3-9tm64-193kk");
             userPassword = userPassword + Cryptography.result;
+            Cryptography.result = "";
             Cryptography.Encrypt(Convert.ToString(playerXP), "4m1ii-93641-mqhjl");
             userPassword = userPassword + Cryptography.result;
+            Cryptography.result = "";
             Cryptography.Encrypt(Convert.ToString(playerHP), "331jk-loinf-5t1ja");
             userPassword = userPassword + Cryptography.result;
+            Cryptography.result = "";
             Cryptography.Encrypt(Convert.ToString(playerMP), "kja81-9knag-pq1tb");
             userPassword = userPassword + Cryptography.result;
+            Cryptography.result = "";
             Cryptography.Encrypt(Convert.ToString(playerLVL), "nhgya-muiy1-g1n7k");
             userPassword = userPassword + Cryptography.result;
+            Cryptography.result = "";
 
             Console.Clear();
             Console.WriteLine("Here's your password.");
@@ -244,12 +273,66 @@ namespace consoleRPG
 
         static void Load()
         {
-            // todo
+            Console.Clear();
+            Console.WriteLine("Please present your password.");
+            Console.WriteLine("----------------------------------");
+            userPassword = Convert.ToString(Console.ReadLine());
+
+            /* todo; code in decrypting.
+            for now we send the player back to the title screen.
+            */
+
+            Console.Clear();
+            Console.WriteLine("Sorry, but loading is currently unfinished. Please start a new file.");
+            Console.WriteLine("---------------------------------------------------------------------");
+            Thread.Sleep(5000);
+            TitleScreen();            
+
         }
 
-        static void MainBattleLoop()
+        public static void MainBattleLoop()
         {
-            // todo
+            Console.Clear();
+            Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
+            Console.WriteLine(Enemy.enemyType + ": " + Enemy.enemyHP + "HP, " + Enemy.enemyMP + "MP, LEVEL" + Enemy.enemyLVL);
+            Console.WriteLine("1 - ATTACKS      2 - HEAL");
+            Console.WriteLine("3 - ITEMS        4 - RUN AWAY");
+            Console.WriteLine("----------------------------------------------------------------------------------------------");
+            tempVar = Convert.ToString(Console.ReadLine());
+
+            switch(tempVar)
+            {
+                case "1":
+                {
+                    InitAttackMenu();
+                    break;
+                }
+                case "2":
+                {
+                    Attacks.Heal();
+                    break;
+                }
+                case "3":
+                {
+                    context = "attack menu";
+                    ViewItems();
+                    break;
+                }
+                case "4":
+                {
+                    RunAway();
+                    break;  
+                }
+                default:
+                {
+                    Console.WriteLine("Invalid input. Try again.");
+                    Thread.Sleep(5000);
+                    MainBattleLoop();
+                    break;
+                }
+            }   
+
+
         }
 
         static void Quit()
@@ -258,7 +341,7 @@ namespace consoleRPG
             Console.WriteLine("Do you want to save before quitting?");
             Console.WriteLine("1 for yes, 2 for no.");
             Console.WriteLine("-------------------------------------");
-            tempVar = Convert.ToString(Console.ReadLine());
+            tempVar = Convert.ToString(Console.ReadKey());
 
             switch (tempVar)
             {
@@ -290,7 +373,7 @@ namespace consoleRPG
             Console.WriteLine("Are you sure you want to quit?");
             Console.WriteLine("1 for yes, 2 for no.");
             Console.WriteLine("-------------------------------------");
-            tempVar = Convert.ToString(Console.ReadLine());
+            tempVar = Convert.ToString(Console.ReadKey());
 
             switch (tempVar)
             {
@@ -312,6 +395,16 @@ namespace consoleRPG
                         break;
                     }
             }
+        }
+
+        public static void InitAttackMenu()
+        {
+            // todo
+        }
+
+        public static void RunAway()
+        {
+            // todo
         }
 
     }
@@ -401,4 +494,35 @@ namespace consoleRPG
         }  
     }  
 
+    public class Attacks
+    {
+        public static void Heal()
+        {
+            Console.Clear();
+            Console.WriteLine(Player.playerName + " used Heal!");
+            if(Player.playerHP == 100)
+            {
+                Console.WriteLine("But, they already had 100HP!");
+            }
+            else
+            {
+                if(Player.playerHP >= 96)
+                {
+                    Player.playerHP += (100 - Player.playerHP); // prevents overflowing
+                    Console.WriteLine("They healed " + (100 - Player.playerHP) + "HP!");
+                }
+               else
+                {
+                    Player.playerHP += 5;
+                    Console.WriteLine("They healed 5HP!");
+                }
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.MainBattleLoop();
+        }
+           
+
+    }
 }
