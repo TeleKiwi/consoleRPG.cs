@@ -614,12 +614,46 @@ namespace consoleRPG
 
         public static void MeleeAttack()
         {
-            // todo
+            Console.Clear();
+            Console.WriteLine(Player.playerName + " used Melee Attack!");
+            Player.tempInt = Enemy.enemyR.Next(0, 10);
+            if (Player.tempInt == 1)
+            {
+                Console.WriteLine("But, it missed!");
+            }
+            else
+            { 
+                Enemy.enemyHP -= Convert.ToInt32(Player.moves[1]);
+                Console.WriteLine("They dealt " + Player.moves[1] + " damage!");
+              
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.battleTurn = 1;
+            Player.MainBattleLoop();
         }
 
         public static void SpellAttack()
         {
-            // todo
+            Console.Clear();
+            Console.WriteLine(Player.playerName + " used Spell Attack!");
+            Player.tempInt = Enemy.enemyR.Next(3, 10);
+            if (Player.tempInt <= 3)
+            {
+                Console.WriteLine("But, it missed!");
+            }
+            else
+            { 
+                Enemy.enemyHP -= Convert.ToInt32(Player.moves[2]);
+                Console.WriteLine("They dealt " + Player.moves[2] + " damage!");
+              
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.battleTurn = 1;
+            Player.MainBattleLoop();
         }
 
         public static void Item()
@@ -657,7 +691,7 @@ namespace consoleRPG
 
         public static void EnemyMeleeAttack()
         {
-            // todo
+           // todo
         }
 
         public static void EnemySpellAttack()
