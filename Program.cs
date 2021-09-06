@@ -14,7 +14,6 @@ namespace consoleRPG
         public static string playerName;
         public static string versionNo = "0.0.3";
         public static string userPassword;
-        public static string key;
         public static string tempVar; // used to store player input temporarily
         public static int battleTurn;
         public static int tempInt;
@@ -46,7 +45,7 @@ namespace consoleRPG
 
             TitleScreen();
         }
-        
+
         static void TitleScreen()
         {
             // title screen
@@ -139,7 +138,7 @@ namespace consoleRPG
                         break;
                     }
                 case "3":
-                    {   
+                    {
                         context = "main menu";
                         Save();
                         break;
@@ -183,45 +182,45 @@ namespace consoleRPG
                     Console.WriteLine(moves[i] + " - Deals " + damage[i] + " damage.");
                 }
             }
-            
+
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             for (i = 0; i <= items.Length; i++)
             {
-                Console.WriteLine(items[i] + " - " + itemDescriptions[i]);    
+                Console.WriteLine(items[i] + " - " + itemDescriptions[i]);
             }
 
             Console.WriteLine("Press any key to exit.");
             Console.WriteLine("-------------------------------------------------");
             Console.ReadKey();
-            switch(context)
+            switch (context)
             {
                 case "main menu":
-                {
-                    GameLoop();
-                    break;
-                }
+                    {
+                        GameLoop();
+                        break;
+                    }
                 case "attack menu":
-                {
-                    MainBattleLoop();
-                    break;
-                }
+                    {
+                        MainBattleLoop();
+                        break;
+                    }
                 default:
-                {
-                    Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
-                    Thread.Sleep(5000);
-                    Console.Clear();
-                    TitleScreen();
-                    break;
-                }
-                
+                    {
+                        Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
+                        Thread.Sleep(5000);
+                        Console.Clear();
+                        TitleScreen();
+                        break;
+                    }
+
             }
-            
+
 
         }
 
         static void Save()
-        {   
+        {
             Console.Clear();
             Console.WriteLine("Generating your password....");
             Console.WriteLine("------------------------------");
@@ -249,26 +248,26 @@ namespace consoleRPG
             Console.ReadKey();
 
             Console.Clear();
-            switch(context)
+            switch (context)
             {
                 case "quit":
-                {
-                    QuitConformation();
-                    break;
-                }
+                    {
+                        QuitConformation();
+                        break;
+                    }
                 case "main menu":
-                {
-                    GameLoop();
-                    break;
-                }
+                    {
+                        GameLoop();
+                        break;
+                    }
                 default:
-                {
-                    Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
-                    Thread.Sleep(5000);
-                    Console.Clear();
-                    TitleScreen();
-                    break;
-                }
+                    {
+                        Console.WriteLine("Couldn't find a place to send you back to. Sending you to title screen.");
+                        Thread.Sleep(5000);
+                        Console.Clear();
+                        TitleScreen();
+                        break;
+                    }
             }
 
         }
@@ -288,7 +287,7 @@ namespace consoleRPG
             Console.WriteLine("Sorry, but loading is currently unfinished. Please start a new file.");
             Console.WriteLine("---------------------------------------------------------------------");
             Thread.Sleep(5000);
-            TitleScreen();            
+            TitleScreen();
 
         }
 
@@ -296,72 +295,73 @@ namespace consoleRPG
         {
             Console.Clear();
 
-            if(battleTurn == 0)
-            {Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
-            Console.WriteLine(Enemy.enemyType + ": " + Enemy.enemyHP + "HP, " + Enemy.enemyMP + "MP, LEVEL" + Enemy.enemyLVL);
-            Console.WriteLine("1 - ATTACKS      2 - HEAL");
-            Console.WriteLine("3 - ITEMS        4 - RUN AWAY");
-            Console.WriteLine("----------------------------------------------------------------------------------------------");
-            tempVar = Convert.ToString(Console.ReadLine());
-
-            switch(tempVar)
+            if (battleTurn == 0)
             {
-                case "1":
+                Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
+                Console.WriteLine(Enemy.enemyType + ": " + Enemy.enemyHP + "HP, " + Enemy.enemyMP + "MP, LEVEL" + Enemy.enemyLVL);
+                Console.WriteLine("1 - ATTACKS      2 - HEAL");
+                Console.WriteLine("3 - ITEMS        4 - RUN AWAY");
+                Console.WriteLine("----------------------------------------------------------------------------------------------");
+                tempVar = Convert.ToString(Console.ReadLine());
+
+                switch (tempVar)
                 {
-                    InitAttackMenu();
-                    break;
-                }
-                case "2":
-                {
-                    Attacks.Heal();
-                    break;
-                }
-                case "3":
-                {
-                    context = "attack menu";
-                    ViewItems();
-                    break;
-                }
-                case "4":
-                {
-                    RunAway();
-                    break;  
-                }
-                default:
-                {
-                    Console.WriteLine("Invalid input. Try again.");
-                    Thread.Sleep(5000);
-                    MainBattleLoop();
-                    break;
+                    case "1":
+                        {
+                            InitAttackMenu();
+                            break;
+                        }
+                    case "2":
+                        {
+                            Attacks.Heal();
+                            break;
+                        }
+                    case "3":
+                        {
+                            context = "attack menu";
+                            ViewItems();
+                            break;
+                        }
+                    case "4":
+                        {
+                            RunAway();
+                            break;
+                        }
+                    default:
+                        {
+                            Console.WriteLine("Invalid input. Try again.");
+                            Thread.Sleep(5000);
+                            MainBattleLoop();
+                            break;
+                        }
                 }
             }
-            }   
             else
             {
                 tempInt = Enemy.enemyR.Next(0, 9);
 
-                switch(tempInt)
+                switch (tempInt)
                 {
                     case 1 or 2 or 3:
-                    {
-                        EnemyMeleeAttack();
-                        break;
-                    }
+                        {
+                            Attacks.EnemyMeleeAttack();
+                            break;
+                        }
                     case 4 or 5 or 6:
-                    {
-                        EnemySpellAttack();
-                        break;
-                    }
+                        {
+                            Attacks.EnemySpellAttack();
+                            break;
+                        }
                     case 7 or 8 or 9:
-                    {
-                        EnemyHeal();
-                        break;
-                    }
+                        {
+                            Attacks.EnemyHeal();
+                            break;
+                        }
                 }
             }
 
         }
-        
+
 
         static void Quit()
         {
@@ -374,7 +374,7 @@ namespace consoleRPG
             switch (tempVar)
             {
                 case "1":
-                    {   
+                    {
                         context = "quit";
                         Save();
                         break;
@@ -433,10 +433,10 @@ namespace consoleRPG
         public static void RunAway()
         {
             Console.Clear();
-            
+
             tempInt = Enemy.enemyR.Next(0, 10);
 
-            if(tempInt <= 4) // failed to run away
+            if (tempInt <= 4) // failed to run away
             {
                 Console.WriteLine("You failed to run away!");
                 Console.WriteLine("-------------------------");
@@ -451,7 +451,7 @@ namespace consoleRPG
                 Thread.Sleep(5000);
                 Player.battleTurn = 0;
                 GameLoop();
-                
+
             }
 
         }
@@ -498,8 +498,8 @@ namespace consoleRPG
 
         public static void GenEnemy()
         {
-            while (enemyLVL !> Player.playerLVL)
-            {   
+            while (enemyLVL! > Player.playerLVL)
+            {
                 // this generates the enemy type
                 enemyTempVar = enemyR.Next(1, enemyTypeAmount);
                 enemyType = possibleEnemyTypes[enemyTempVar];
@@ -512,36 +512,36 @@ namespace consoleRPG
     }
 
     public class Cryptography
-    {  
+    {
         public static string result;
 
-        public static string Encrypt(string input, string key)  
-        {  
-            byte[] inputArray = UTF8Encoding.UTF8.GetBytes(input);  
-            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();  
-            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);  
-            tripleDES.Mode = CipherMode.ECB;  
-            tripleDES.Padding = PaddingMode.PKCS7;  
-            ICryptoTransform cTransform = tripleDES.CreateEncryptor();  
-            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
-            tripleDES.Clear(); 
-            result = Convert.ToBase64String(resultArray, 0, resultArray.Length); 
+        public static string Encrypt(string input, string key)
+        {
+            byte[] inputArray = UTF8Encoding.UTF8.GetBytes(input);
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
+            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);
+            tripleDES.Mode = CipherMode.ECB;
+            tripleDES.Padding = PaddingMode.PKCS7;
+            ICryptoTransform cTransform = tripleDES.CreateEncryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
+            tripleDES.Clear();
+            result = Convert.ToBase64String(resultArray, 0, resultArray.Length);
             return result;
-        }  
-        public static string Decrypt(string input, string key)  
-        {  
-            byte[] inputArray = Convert.FromBase64String(input);  
-            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();  
-            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);  
-            tripleDES.Mode = CipherMode.ECB;  
-            tripleDES.Padding = PaddingMode.PKCS7;  
-            ICryptoTransform cTransform = tripleDES.CreateDecryptor();  
-            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);  
-            tripleDES.Clear();   
-            result = UTF8Encoding.UTF8.GetString(resultArray);  
+        }
+        public static string Decrypt(string input, string key)
+        {
+            byte[] inputArray = Convert.FromBase64String(input);
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
+            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);
+            tripleDES.Mode = CipherMode.ECB;
+            tripleDES.Padding = PaddingMode.PKCS7;
+            ICryptoTransform cTransform = tripleDES.CreateDecryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
+            tripleDES.Clear();
+            result = UTF8Encoding.UTF8.GetString(resultArray);
             return result;
-        }  
-    }  
+        }
+    }
 
     public class Attacks
     {
@@ -549,18 +549,18 @@ namespace consoleRPG
         {
             Console.Clear();
             Console.WriteLine(Player.playerName + " used Heal!");
-            if(Player.playerHP == 100)
+            if (Player.playerHP == 100)
             {
                 Console.WriteLine("But, they already had 100HP!");
             }
             else
             {
-                if(Player.playerHP >= 96)
+                if (Player.playerHP >= 96)
                 {
                     Player.playerHP += (100 - Player.playerHP); // prevents overflowing
                     Console.WriteLine("They healed " + (100 - Player.playerHP) + "HP!");
                 }
-               else
+                else
                 {
                     Player.playerHP += 5;
                     Console.WriteLine("They healed 5HP!");
@@ -569,9 +569,61 @@ namespace consoleRPG
             Console.WriteLine("--------------------------------------------------");
             Thread.Sleep(5000);
             Console.Clear();
+            Player.battleTurn = 1;
             Player.MainBattleLoop();
         }
-           
 
+        public static void MeleeAttack()
+        {
+            // todo
+        }
+
+        public static void SpellAttack()
+        {
+            // todo
+        }
+
+        public static void Item()
+        {
+            // todo
+        }
+
+        public static void EnemyHeal()
+        {
+            Console.Clear();
+            Console.WriteLine(Enemy.enemyType + " used Heal!");
+            if (Enemy.enemyHP == 100)
+            {
+                Console.WriteLine("But, they already had 100HP!");
+            }
+            else
+            {
+                if (Enemy.enemyHP >= 96)
+                {
+                    Enemy.enemyHP += (100 - Enemy.enemyHP); // prevents overflowing
+                    Console.WriteLine("They healed " + (100 - Enemy.enemyHP) + "HP!");
+                }
+                else
+                {
+                    Enemy.enemyHP += 5;
+                    Console.WriteLine("They healed 5HP!");
+                }
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.battleTurn = 0;
+            Player.MainBattleLoop();
+        }
+
+        public static void EnemyMeleeAttack()
+        {
+            // todo
+        }
+
+        public static void EnemySpellAttack()
+        {
+            // todo
+        }
     }
 }
