@@ -17,6 +17,7 @@ namespace consoleRPG
         public static string tempVar; // used to store player input temporarily
         public static int battleTurn;
         public static int tempInt;
+\        public static double tempDouble;
         public static int playerHP;
         public static int playerMP;
         public static int playerXP = 0;
@@ -297,6 +298,14 @@ namespace consoleRPG
         {
             Console.Clear();
 
+            if (playerHP == 0)
+            {
+                PlayerDeath();
+            }
+            if (Enemy.enemyHP == 0)
+            {
+                Enemy.EnemyDeath();
+            }
             if (battleTurn == 0)
             {
                 Console.WriteLine(playerName + ": " + playerHP + "HP, " + playerMP + "MP, LEVEL" + playerLVL);
@@ -693,12 +702,50 @@ namespace consoleRPG
 
         public static void EnemyMeleeAttack()
         {
-           // todo
+            Console.Clear();
+            Console.WriteLine(Enemy.enemyType + " used Melee Attack!");
+            Player.tempInt = Enemy.enemyR.Next(0, 10);
+            if (Player.tempInt <= 3)
+            {
+                Console.WriteLine("But, it missed!");
+            }
+            else
+            { 
+                Player.tempDouble = Convert.ToInt32(Player.moves[1]) * Convert.ToInt32((Enemy.enemyLVL / 1.2)); 
+                Player.tempInt = Convert.ToInt32(Player.tempDouble);
+                Enemy.enemyHP -= Player.tempInt; // we have converted from a double to a int so we now do the operation
+                Console.WriteLine("They dealt " + Player.tempInt + " damage!");
+              
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.battleTurn = 0;
+            Player.MainBattleLoop();
         }
 
         public static void EnemySpellAttack()
         {
-            // todo
+            Console.Clear();
+            Console.WriteLine(Enemy.enemyType + " used Spell Attack!");
+            Player.tempInt = Enemy.enemyR.Next(3, 10);
+            if (Player.tempInt <= 5)
+            {
+                Console.WriteLine("But, it missed!");
+            }
+            else
+            { 
+                Player.tempDouble = Convert.ToInt32(Player.moves[2]) * Convert.ToInt32((Enemy.enemyLVL / 1.2));
+                Player.tempInt = Convert.ToInt32(Player.tempDouble);
+                Enemy.enemyHP -= Player.tempInt;
+                Console.WriteLine("They dealt " + Player.tempInt + " damage!");
+              
+            }
+            Console.WriteLine("--------------------------------------------------");
+            Thread.Sleep(5000);
+            Console.Clear();
+            Player.battleTurn = 0;
+            Player.MainBattleLoop();
         }
     }
 }
